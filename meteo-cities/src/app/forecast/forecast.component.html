@@ -1,0 +1,85 @@
+<div class="card" *ngIf="city">
+    <h2 class="card-header text-center"> {{city.name}} 
+        <ul class="nav nav-tabs card-header-tabs nav-justified mt-5">
+            <li class="nav-item">
+            <a class="nav-link" [ngClass]="{'active': displayDay}" aria-current="page" (click)="displayDay = true">Šios dienos</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" [ngClass]="{'active': !displayDay}" (click)="displayDay = false">Savaitės</a>
+            </li>
+        </ul>
+    </h2>
+    <p *ngIf="gettingData"> Kraunami duomenys...</p>
+    <div class="card-body" *ngIf="!gettingData">
+        
+    <div class="alert alert-danger" *ngIf="error">
+        <h2>Įvyko klaida!</h2>
+        <p>{{error}}</p>
+    </div>
+
+    <div class="table-responsive" *ngIf="displayDay">
+        <table class="table table-borderless align-middle" *ngIf="city">
+            <thead >
+                <tr>
+                <th scope="col">Diena</th>
+                <th scope="col">Naktis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                    <i class="" [ngClass]="getMeteoIcon(meteodata[0].dayWeather)"></i>
+                        <span class="temp" *ngIf="meteodata[0].dayAvgTemperature">  {{meteodata[0].dayAvgTemperature}} °C</span>
+                        <span class="temp" *ngIf="!meteodata[0].dayAvgTemperature">---</span>
+                    </td>
+                    <td>
+                    <i class="" [ngClass]="getMeteoIcon(meteodata[0].nightWeather, false)"> </i>
+                    <span class="temp" *ngIf="meteodata[0].nightAvgTemperature">  {{meteodata[0].nightAvgTemperature}} °C</span>
+                    <span class="temp" *ngIf="!meteodata[0].nightAvgTemperature">---</span>
+                </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="table-responsive" *ngIf="!displayDay">
+        <table class="table align-middle table-striped" *ngIf="city">
+            <thead >
+                <tr>
+                <th scope="col">Data</th>
+                <th scope="col">Diena</th>
+                <th scope="col">Naktis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let info of meteodata">
+                    <td>
+                        <span class="temp">{{getDayOfTheWeek(info.forecastedDate.getDay())}}</span>
+                        <span class="date">  ({{info.forecastedDate.getFullYear()}}-{{info.forecastedDate.getMonth() < 9 ? '0': ''}}{{info.forecastedDate.getMonth() + 1}}-{{info.forecastedDate.getMonth() < 10 ? '0': ''}}{{info.forecastedDate.getDate()}})</span>
+                        <!-- <span class="date">  ({{info.forecastedDate.toDateString()}})</span> -->
+                        
+                    </td>
+                    <td>
+                    <i [ngClass]="getMeteoIcon(info.dayWeather)"> </i>
+                        <span class="temp" *ngIf="info.dayAvgTemperature">  {{info.dayAvgTemperature}} °C</span>
+                        <span class="temp" *ngIf="!info.dayAvgTemperature">---</span>
+                    </td>
+                    <td>
+                    <i [ngClass]="getMeteoIcon(info.nightWeather, false)"> </i>
+                    <span class="temp" *ngIf="info.nightAvgTemperature">  {{info.nightAvgTemperature}} °C</span>
+                    <span class="temp" *ngIf="!info.nightAvgTemperature">---</span>
+                </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>
+
+<div class="alert alert-danger mx-5" *ngIf="!city"> 
+    Duomenų apie tokį miestą neturime
+</div>
+
+
+
+
+

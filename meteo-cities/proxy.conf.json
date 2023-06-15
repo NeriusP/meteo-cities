@@ -1,0 +1,10 @@
+{
+    "http://localhost:4200/api": {
+      "target": "https://api.meteo.lt/v1/places",
+      "secure": true,
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api": ""
+      }
+    }
+}
